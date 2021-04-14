@@ -8,7 +8,7 @@ export interface BeneficiaryInstitution {
     name?: string;
     address?: Addreess; // con calles
     function?: string;
-    state?: boolean; // todos llevan state
+    state?: State; // todos llevan state
     // VERIFICAR COMO Y DE DONDE VIENE LA INOFORMACION 
     // nombre representante legal
     // ruc o ccedula representante legal

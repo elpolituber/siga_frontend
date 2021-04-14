@@ -8,5 +8,5 @@ export interface Objective {
     description?: string
     type?: Catalogue;
     children?: Objective[];
-    state?: boolean;
+    state?: State;
 }

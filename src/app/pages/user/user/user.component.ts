@@ -74,7 +74,9 @@ export class UserComponent implements OnInit {
         this.selectedCol = this.cols[0];
         this.getUsers();
     }
-
+    onBasicUpload(event){
+        console.log(event);
+    }
     buildForm() {
         this.form = this._fb.group({
             id: [],

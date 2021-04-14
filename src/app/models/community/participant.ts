@@ -9,7 +9,7 @@ export interface Participant {
     position?: string; // revisar en la base DE DONDE Y COMO DEBE VENIR LA INFO
     working_hours?: number;
     type?: Catalogue;
-    state?: boolean;
+    state?: State;
     // DOCENTES, ESTUDIANTES, COORDINADORES, RECTOR.
     // END POINT PARA AUTOMATICO RECTOR
 }

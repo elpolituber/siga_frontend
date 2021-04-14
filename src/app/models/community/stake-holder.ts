@@ -8,6 +8,6 @@ export interface StakeHolder {
     position?: string;
     function?: string;
     type?: Catalogue;
-    state?: boolean;
+    state?: State;
     // REPRESENTANTE LEGAL, COORDINADORE
 }

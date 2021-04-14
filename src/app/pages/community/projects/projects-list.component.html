@@ -1,0 +1,124 @@
+<h1>Proyectos</h1>
+
+<!-- START PDF -->
+<div class="container">
+<p-table #dt1 [value]="projects" 
+        [paginator]="true" [rows]="10" 
+        [showCurrentPageReport]="true" 
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+        [rowsPerPageOptions]="[10,25,50]"
+         styleClass="p-datatable-striped"
+         [loading]="loading"
+         [globalFilterFields]="['code','beneficiary_institution.name','title','status.name']" 
+         
+    >
+    <!-- REVISAR LA BUSQUEDA DE INSTITUCION BENEFICIARIA -->
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+            <!-- asesorado por la adolecente -->
+            <button pButton pRipple 
+                type="button" 
+                icon="pi pi-plus" 
+                class="p-button-rounded p-button-help"
+                routerLink="../forms"
+            >
+            </button>
+            <button pButton label="Clear" 
+                 class="p-button-outlined"
+                icon="pi pi-filter-slash" 
+                (click)="clear(dt1)"></button>
+            <span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText 
+                type="text" 
+                (input)="dt1.filterGlobal($event.target.value, 'contains')" 
+                placeholder="Buscar la palabra clave"/>
+            </span>
+           
+           
+        </div>
+        
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Entidad </th>
+            <th>Codigo del proyecto</th>
+            <th>Nombre del Projecto</th>
+            <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Estado
+                </div>
+            </th>
+            <th *ngIf="role.name=='coord_vinculacion'">fecha de aprobacion</th>
+            <th>Opciones</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project>
+        <tr>
+            <td>
+                {{project.beneficiary_institution.name}} 
+            </td>
+            <td>
+                {{project.code}} 
+            </td>
+            <td>
+                {{project.title}}
+            </td>
+            <td >
+                {{project.status.name}}    
+            </td>
+            
+            <th *ngIf="role.name=='coord_vinculacion'">
+                <button pButton type="button" 
+                        label="Aprobar"></button>
+                <button pButton type="button" label="Rechazar"></button>
+            </th>
+            <td>
+                 <button pButton type="button" 
+                    icon="pi pi-pencil"
+                    routerLink="../forms/{{project.id}}"
+                
+                    class="p-button-rounded p-button-success">
+                </button>  
+                <span> &nbsp; </span>
+                <button pButton type="button"   
+                    pRipple icon="pi pi-trash"
+                    class="p-button-rounded p-button-danger"
+                    (click)="deleteproject(project)"
+                    >
+                </button>
+                <span> &nbsp; </span>
+                <a href="{{convenio(project,'pdfConvenio/')}}"  target="_blank">
+                    <button type="button" 
+                    pButton pRipple icon="pi pi-file-pdf"  
+                    class="p-button-rounded p-button-warning p-mr-2" 
+                    pTooltip="PDFConvenio" tooltipPosition="bottom"></button>
+                </a>
+                <a href="{{convenio(project,'pdfProject/')}}"  target="_blank">
+                <button type="button" 
+                    pButton pRipple icon="pi pi-file-pdf"  
+                    class="p-button-rounded p-button-warning p-mr-2" 
+                    pTooltip="PDFProyecto" 
+                    tooltipPosition="bottom">
+                    
+                </button>
+                </a>    
+                
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft">
+        <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">a</p-button>
+    </ng-template>
+    <ng-template pTemplate="paginatorright">
+        <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-table>
+
+<!-- <div>PENER EL BOTON MAS EN EL CAPTION
+
+    <button class="btn col col-lg-4 btn-danger btn-block ml-4" (click)="downloadPDF()">Download PDF</button>
+    <button class="btn col col-lg-4 btn-danger btn-block ml-4" (click)="openPDF()">Open PDF</button>
+</div> -->
+
+

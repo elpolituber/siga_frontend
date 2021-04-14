@@ -2,10 +2,12 @@ import {Catalogue, Career, SchoolPeriodo} from '../ignug/models.index';
 import {Participant, Objective, BeneficiaryInstitution, StakeHolder, Activity} from '../community/models.index';
 
 export interface Project {
+    //forEach(arg0: (val: any) => void);
     id?: number;
     title?: string;
     // nuevo campo 
     state?: Catalogue;
+    status?:Catalogue;
     school_period?: SchoolPeriodo;
     code?: string;
     // REVISRA NUEVO FORMATO YA NO TIENE assigned_line?: Catalogue; // linea de investigacion

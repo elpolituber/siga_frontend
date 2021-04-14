@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
-// import {ProjectsComponent} from './projects/projects-list.component';
+import {ProjectsComponent} from './projects/projects-list.component';
 import {CommunityRoutes} from './community.routing';
 import {DataViewModule} from 'primeng/dataview';
 import {PanelModule} from 'primeng/panel';
@@ -47,7 +47,7 @@ import { from } from 'rxjs';
         StepsModule,
     ],
     declarations: [
-        // ProjectsComponent,
+        ProjectsComponent,
     ],
     providers: [
 

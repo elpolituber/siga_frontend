@@ -1,0 +1,160 @@
+<div class="p-grid ui-fluid">
+    <form [formGroup]="form" novalidate class="p-grid" >
+        <div class="p-col-6">
+            <label for="titulo">Titulo del Proyecto:</label>
+        </div>
+        <div class="p-col-6">
+            <label for="codigo">Codigo del Proyecto:</label>
+        </div>
+        <div class="p-col-2 p-sm-6">
+            <input 
+            formControlName="title" 
+            type="text" 
+            pInputText 
+            placeholder="Titulo">
+        </div>
+        <div class="p-col-2 p-sm-6">
+            <input formControlName="code" 
+            type="text" pInputText 
+            placeholder="Codigo">
+        </div>
+        <div class="p-col-6">
+            <label for="campo">Campo:</label>
+            <br>
+            <input formControlName="field" 
+            type="text" 
+            pInputText placeholder="">
+            
+        </div>
+        
+        <div class="p-field p-col-6">
+            <label for="carrera">Carrera:</label><br>
+            <p-autoComplete
+                formControlName="career"
+                [suggestions]="filtereCareers"
+                (completeMethod)="careerF($event)" 
+                [minLength]="1" 
+                [dropdown]="true"
+                >
+                <ng-template let-career pTemplate="careers">
+                    <div  class="ui-helper-clearfix">
+                        <div style="font-size:18px;margin:10px 10px 0 0" 
+                        >{{career.name}} <strong>- {{career.modality.name}}</strong></div>
+                    </div>
+                </ng-template>
+            </p-autoComplete>
+        </div>
+     
+        <div class="p-field p-col-6">
+            <label for="ciclo">Ciclo:</label><br>
+            <input formControlName="cycle" type="text" pInputText placeholder="Ej: Pirmero, Segundo, Tercero">
+        </div>       
+        <div *ngIf="modalitys !=''"   class="p-field p-col-6">
+            <label for="modalidad">Modalidad:</label> <br>
+            <input formControlName="modality" 
+            disabled type="text"
+             pInputText placeholder="modality">
+        </div>
+        
+        <div class="p-field p-col-6">
+            <label for="carrera">Canton:</label><br>
+            <p-autoComplete formControlName="canton" [suggestions]="careers"
+                (completeMethod)="filterAssignedLines($event)" [minLength]="1" [dropdown]="true">
+                <ng-template let-brand pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                        <div style="font-size:18px;margin:10px 10px 0 0">{{brand}}</div>
+                    </div>
+                </ng-template>
+            </p-autoComplete>
+        </div>
+
+        <div class="p-field p-col-6">
+            <label for="carrera">Ciudad:</label><br>
+            <p-autoComplete [suggestions]="careers"
+            formControlName="city"
+                (completeMethod)="filterAssignedLines($event)" [minLength]="1" [dropdown]="true">
+                <ng-template let-brand pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                        <div style="font-size:18px;margin:10px 10px 0 0">{{brand}}</div>
+                    </div>
+                </ng-template>
+            </p-autoComplete>
+        </div>
+
+        <div class="p-field p-col-6">
+            <label for="provincia">Provincia:</label><br>
+            <p-autoComplete [suggestions]="provincia"
+            formControlName="province"
+                (completeMethod)="filterAssignedLines($event)" [minLength]="1" [dropdown]="true">
+                <ng-template let-brand pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                        <div style="font-size:18px;margin:10px 10px 0 0">{{brand}}</div>
+                    </div>
+                </ng-template>
+            </p-autoComplete>
+        </div>
+        <div class="p-field p-col-6">
+            <label for="plazo">Plazo de ejecucion:</label>
+            <input formControlName="lead_time" 
+            disabled="disabled" type="text" 
+            pInputText placeholder="Plazo de ejecucion"><span>mese/s</span>
+        </div>
+        <br>
+        <div class=" p-col-6" *ngIf="this.very_date">
+            <label for="fechaPresentacion">Fecha presentacion:</label> <br><br>
+            <p-calendar 
+            formControlName="delivery_date"
+             [showIcon]="true"
+             placeholder="Fecha presentacion"
+             >
+            </p-calendar>
+        </div>
+        <div class=" p-col-6">    
+            <label for="fechaInicio">Fecha inicio:</label><br><br>
+            <p-calendar 
+            formControlName="start_date" 
+            [showIcon]="true" 
+            placeholder="Fecha inicio"></p-calendar>
+        </div>
+        <div class=" p-col-6">
+            <label for="fechaFinal">Fecha final:</label><br><br>
+            <p-calendar 
+            formControlName="end_date" 
+            [showIcon]="true" 
+            placeholder="Fecha final"></p-calendar>
+        </div>
+        <div class="p-col-7">
+            <input formControlName="id_project" 
+            disabled="disabled" type="text">
+        </div>
+        <br>
+        <p-button
+            type="submit" 
+            (click)="autocomplete()"
+            class="p-col-8"
+        >
+        Autocompletar
+        </p-button>
+        
+        <button 
+            *ngIf="form.value.id_project=='' && this.url.length == 2"
+            pButton 
+            pRipple 
+            type="submit" 
+            label="Guardar" 
+            class=" p-button-outlined"
+            (click)="create()"
+        >
+        </button>
+        <button 
+            *ngIf="form.value.id_project!='' || this.url.length == 3"
+            pButton 
+            pRipple 
+            type="submit" 
+            label="Actualizar" 
+            class=" p-button-outlined p-button-success"
+            (click)="update()"
+        >
+        </button>        
+    </form>
+</div>

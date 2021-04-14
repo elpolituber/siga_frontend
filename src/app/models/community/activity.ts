@@ -6,5 +6,5 @@ export interface Activity {
     project?: Project;
     type?: Catalogue; 
     description?: string;
-    state?: boolean;
+    state?: State;
 }

@@ -4,7 +4,7 @@
 
 
 // export const URL = 'http://192.168.0.184:8000/';
-export const URL = 'http://laravel-dev-backend.test/';
+export const URL = 'http://siga_backend.test:8080/';
 
 export const environment = {
     production: false,
@@ -18,7 +18,7 @@ export const environment = {
     API_URL_COMMUNITY: URL + 'v1/community/',
 
     CLIENT_ID: '2',
-    CLIENT_SECRET: 'aWutjlzle2OXOovBeCMR8aHY4h2CKM6B1Il87rW4',
+    CLIENT_SECRET: '4mJVlRxAJW2YJSWS2NugeTn9tx2wdH4jqtQD1Oro',
     GRANT_TYPE: 'password',
 };
 

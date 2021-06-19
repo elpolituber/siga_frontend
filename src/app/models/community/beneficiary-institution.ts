@@ -1,4 +1,4 @@
-import {Addreess} from '../ignug/address';
+import {Location} from '../ignug/location'
 import {State} from '../ignug/state';
 
 export interface BeneficiaryInstitution {
@@ -7,7 +7,9 @@ export interface BeneficiaryInstitution {
     ruc?:number;
     files?:File[];
     name?: string;
-    address?: Addreess; // con calles
+    address?:string;
+    location?: Location;
+    parroquia?:string; // con calles
     function?: string;
     state?: State; // todos llevan state
     // VERIFICAR COMO Y DE DONDE VIENE LA INOFORMACION 

@@ -80,7 +80,6 @@ export class BeneficiaryInstitutionComponent implements OnInit {
       project_id:[''],
       beneficiary_id:['',],
       tabPanel:['second'],
-
     });
     this.holder=this.formBuilder.group({
       name: ['', Validators.required],

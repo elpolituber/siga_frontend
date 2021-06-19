@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
 import { ProjectsComponent } from './projects/projects-list.component';
-import { FormsComponent } from './forms/form.component'
 
 export const CommunityRoutes: Routes = [
     {
         path: '',
-        children: [
-            {
+        children: [ 
+            { 
                 path: 'projects',
                 component: ProjectsComponent
             },
@@ -18,7 +17,7 @@ export const CommunityRoutes: Routes = [
                 path: 'forms/:id',
                 loadChildren: () => import('./forms/form.module').then(m => m.FormModule)
             },
-            
+             
         ]
     }
 ];

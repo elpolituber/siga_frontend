@@ -19,6 +19,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {FileUploadModule} from 'primeng/fileupload';
 import {TableModule} from 'primeng/table';
 import {StepsModule} from 'primeng/steps';
+import {ToastModule} from 'primeng/toast';
 
 //SERVICIOS
 import { CommunityService } from '../../services/community/community.service'
@@ -45,6 +46,7 @@ import { from } from 'rxjs';
         TableModule,
         FileUploadModule,
         StepsModule,
+        ToastModule
     ],
     declarations: [
         ProjectsComponent,

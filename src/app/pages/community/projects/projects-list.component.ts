@@ -36,20 +36,23 @@ export class ProjectsComponent implements OnInit {
         this.getproject();
     }
     getproject(){
+        delete this.projects;
         this.communityService.get('project').subscribe(
             (response:Project) => {
                 //console.log(response[0].beneficiary_institution);
+                // this.projects=response
+                delete this.projects;
                 let project = response;
-                let valor=[];
+                let valor=[]; 
                 let arrByID = project.filter(function(val){
                     let beneficiario=val.beneficiary_institution == null ? 
                     val.beneficiary_institution={name:'llenar campo'}:'';
-                    let state=val.status==null ?val.status={name:'llenar campo'}:'';
                     valor.push(val);
                 });
-                this.projects=valor;
+                delete this.projects;
+                this.projects=valor; 
                 //console.log(valor);
-                //console.log(this.projects);
+                //console.log(this.projects); 
                 this.loading = false;
                 
             },
@@ -62,32 +65,23 @@ export class ProjectsComponent implements OnInit {
     }
     convenio(project:any,type:string){
         //console.log(type+project.id);
-
         return this.communityService.pdf(type+project.id);
     }
     deleteproject(project:any){
-        // this.confirmationService.confirm({
-        //     message: 'Desea eliminar'+project.title,
-        //     header: 'Confirm',
-        //     icon: 'pi pi-exclamation-triangle',
-        //     accept: () => {
-        //         this.communityService.delete("project/"+ project.id).subscribe(response => {
-        //             this.getproject();
-        //             this.messageService.add({
-        //                 severity:'success', 
-        //                 summary: 'Nota', 
-        //                 detail: 'Su proyecto ya esta eliminado',
-        //                 life: 3000
-        //             })
-        //         }, error => {
-        //             console.log(error);
-        //             })
-        //     }})
         this.communityService.delete("project/"+ project.id).subscribe(response => {
+            //this.projects=[];
             this.getproject();
-            console.log("entro");
+            this.sow();
         });
         
+    }
+    sow(){
+        this.messageService.add({
+            severity:'Success', 
+            summary: 'Eliminado', 
+            detail: 'Su proyecto ya esta eliminado',
+            life: 3000
+        });
     }
     editar(project:any){
         let x="form/"+project.id;  

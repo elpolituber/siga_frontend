@@ -1,7 +1,6 @@
 <h1>Proyectos</h1>
-
+<p-toast></p-toast>
 <!-- START PDF -->
-<div class="container">
 <p-table #dt1 [value]="projects" 
         [paginator]="true" [rows]="10" 
         [showCurrentPageReport]="true" 
@@ -14,19 +13,17 @@
     >
     <!-- REVISAR LA BUSQUEDA DE INSTITUCION BENEFICIARIA -->
     <ng-template pTemplate="caption">
-        <div class="p-d-flex">
+        <div class="p-d-flex"> 
             <!-- asesorado por la adolecente -->
             <button pButton pRipple 
                 type="button" 
                 icon="pi pi-plus" 
                 class="p-button-rounded p-button-help"
                 routerLink="../forms"
+            
             >
             </button>
-            <button pButton label="Clear" 
-                 class="p-button-outlined"
-                icon="pi pi-filter-slash" 
-                (click)="clear(dt1)"></button>
+            
             <span class="p-input-icon-left p-ml-auto">
                 <i class="pi pi-search"></i>
                 <input pInputText 
@@ -65,6 +62,7 @@
                 {{project.title}}
             </td>
             <td >
+
                 {{project.status.name}}    
             </td>
             

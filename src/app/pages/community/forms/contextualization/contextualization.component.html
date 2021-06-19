@@ -1,5 +1,7 @@
+
 <p-steps [model]="itemsContex" [(activeIndex)]="activeIndexContex" [readonly]="false"></p-steps>
-<form [formGroup]="form" novalidate (ngSubmit)="addObjEspe($event)">
+<p-toast></p-toast>
+<form [formGroup]="form" novalidate >
     <div class="p-col-12 p-lg-12" *ngIf="activeIndexContex==0">
         <div class="p-col-12 p-lg-12">
             <div class="p-grid ui-fluid">
@@ -24,7 +26,7 @@
                         <label for="diagnostico">Analisis situacional (Diagnóstico):</label>
                     </div>
                     <div class="p-col-2">
-                        <textarea formControlName="diagnostico" style="width: 500px;" [rows]="5" [cols]="30"
+                        <textarea formControlName="situational_analysis" style="width: 500px;" [rows]="5" [cols]="30"
                             pInputTextarea placeholder="Analisis situacional (Diagnóstico)"
                             ></textarea>
                     </div>
@@ -36,122 +38,216 @@
                             pInputTextarea placeholder="Justificaión" ></textarea>
                     </div>
                 </div>
-                <div class="p-lg-4">
-                    <div class="p-col-12">
-                        <label for="ObjetivoGenereal">Objetivo general:</label>
-                    </div>
-                    <div class="p-col-12">
-                        <textarea formControlName="ObjetivoGeneral" [rows]="5" [cols]="30" pInputTextarea
-                            placeholder="Objetivo general" ></textarea>
-                    </div>
-                </div>
-                <div class="p-lg-4">
-                    <div class="p-col-12">
-                        <label for="indicador">Indicador:</label>
-                    </div>
-                    <div class="p-col-12">
-                        <textarea formControlName="indicador" [rows]="5" [cols]="30" pInputTextarea
-                            placeholder="Indicador" ></textarea>
-                    </div>
-                </div>
-                <div class="p-lg-4">
-                    <div class="p-col-12">
-                        <label for="medioVerificacionGene">Medios de verificación:</label>
-                    </div>
-                    <div class="p-col-12">
-                        <textarea formControlName="medioVerificacionGene" [rows]="5" [cols]="30" pInputTextarea
-                            placeholder="Medios de verificación" ></textarea>
-                    </div>
-                </div>
-            </div>
+            </div>    
+            <button 
+            *ngIf="!botton_display"  
+            [disabled]="form.invalid" 
+            pButton 
+            pRipple 
+            type="submit" 
+            label="Guardar" 
+            class=" p-button-outlined"
+            (click)="create()"
+        >
+        </button>
+        <button 
+            *ngIf="botton_display"
+            [disabled]="form.invalid"
+            pButton 
+            pRipple 
+            type="submit" 
+            label="Actualizar" 
+            class=" p-button-outlined p-button-success"
+            (click)="update()"
+        >
+        </button>
         </div>
     </div>
     <div class="p-col-12 p-lg-12" *ngIf="activeIndexContex==1">
         <div class="p-col-12 p-lg-12">
             <div class="p-grid ui-fluid">
-                <div class="p-lg-4">
+                <div class="p-lg-12">
                     <div class="p-grid">
-                        <div class="p-col-12">
-                            <label for="objetivoEspecifico">Objetivo específico:</label>
-                        </div>
-                        <div class="p-col-10">
-                            <input formControlName="objetivoEspecifico" type="text" pInputText
-                                placeholder="Objetivos específicos">
-                        </div>
-                        <div class="p-col-12">
-                            <label for="indicador">Indicador:</label>
-                        </div>
-                        <div class="p-col-10">
-                            <input formControlName="indicadorEspe" type="text" pInputText placeholder="Indicador">
-                        </div>
-                        <div class="p-col-12">
-                            <label for="medioVerificacionEspe">Medio de verificación:</label>
-                        </div>
-                        <div class="p-col-10">
-                            <input formControlName="medioVerificacionEspe" type="text" pInputText
-                                placeholder="Medios de verificación">
-                        </div>
-                        <div class="p-col-12">
-                            <label for="resultado">Resultado:</label>
-                        </div>
-                        <div class="p-col-10">
-                            <textarea formControlName="resultado" [rows]="5" [cols]="30" pInputTextarea
-                                placeholder="Resultados" ></textarea>
-                        </div>
-                        <div class="p-col-12">
-                            <label for="actividad">Actividad:</label>
-                        </div>
-                        <div class="p-col-10">
-                            <textarea formControlName="actividad" [rows]="5" [cols]="30" pInputTextarea
-                                placeholder="Actividades" ></textarea>
-                        </div>
-                        <div class="p-md-4">
-                            <button pButton type="submit" [disabled]="form.invalid" label="Añadir"
-                                icon="pi pi-plus"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-lg-8">
-                    <div class="p-grid">
-                        <p-table 
-                            [columns]="tablaObjetivos" 
-                            [value]="objetivos" 
-                            selectionMode="single" 
-                            dataKey="vin"
-                            [style]="{'margin-bottom':'20px'}" 
-                            [(selection)]="selectedCar3" 
-                            [responsive]="true"
-                        >
+                        <p-table [value]="objetives">
                             <ng-template pTemplate="caption">
-                                Objtivos especificos
+                                <div class="p-d-flex p-ai-center p-jc-between">
+                                    <button pButton pRipple 
+                                        type="button" 
+                                        icon="pi pi-plus" 
+                                        class="p-button-rounded p-button-help"
+                                        (click)="updateobjetives('create')"
+                                    ></button>
+                                </div>
                             </ng-template>
-                            <ng-template pTemplate="header" let-columns>
+                            <ng-template pTemplate="header">
                                 <tr>
-                                    <th *ngFor="let col of columns" 
-                                    [pSortableColumn]="col.field">
-                                        {{col.header}}
-                                        <p-sortIcon [field]="col.field"></p-sortIcon>
-                                    </th>
+                                    <th>Typo de objetivo</th>
+                                    <th>Descripcion</th>
+                                    <th>Medio de verificacion</th>
+                                    <th>Indicador</th>
+                                    <th>Opciones</th>
                                 </tr>
-                            </ng-template>
-                            <ng-template 
-                                pTemplate="body" 
-                                let-rowData
-                                let-columns="columns"
-                            >
-                                <tr [pSelectableRow]="rowData">
-                                    <td *ngFor="let col of columns">
-                                        <span class="ui-column-title">
-                                            {{col.header}}
-                                        </span>
-                                        {{rowData[col.field]}}
+                            </ng-template> 
+                            <ng-template pTemplate="body" let-aims>   
+                                <tr >
+                                    <td>{{aims.type.name}} </td>
+                                    <td>{{aims.description}}</td>
+                                    <td>{{aims.means_verification}}</td>
+                                    <td>{{aims.indicator}}</td>
+                                    <td>
+                                        <button 
+                                            pButton 
+                                            pRipple type="submit" 
+                                            icon="pi pi-pencil" 
+                                            class="p-button-rounded p-button-warning"
+                                            (click)="updateobjetives(aims)"
+                                        ></button>
+                                        <button pButton pRipple 
+                                            type="button" 
+                                            icon="pi pi-times" 
+                                            class="p-button-rounded p-button-danger"
+                                            (click)="deleteObjetive(aims)"
+                                        ></button>
                                     </td>
                                 </tr>
-                            </ng-template>
-                        </p-table>
+                            </ng-template>                
+                          </p-table>
+                            
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div>
+    </div>
 </form>
+<p-dialog header="Lista de los obejtivos a cumplir en la institucion beneficaria" 
+[(visible)]="display_objetive" modal="true"
+           showEffect="fade" [style]="{width: '100%'}">
+    <ng-template pTemplate="content">
+        <p-table [value]="objetives">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Typo de objetivo</th>
+                    <th>Descripcion</th>
+                    <th>Medio de verificacion</th>
+                    <th>Indicador</th>
+                    <th>Opciones</th>
+                </tr>
+            </ng-template> 
+            <ng-template pTemplate="body" let-aims>   
+                <tr >
+                    <td>{{aims.type.name}} </td>
+                    <td>{{aims.description}}</td>
+                    <td>{{aims.indicator}}</td>
+                    <td>{{stakeHolders.type.name}}</td>
+                    <td>
+                        <button 
+                            pButton 
+                            pRipple type="submit" 
+                            icon="pi pi-pencil" 
+                            class="p-button-rounded p-button-warning"
+                            (click)="updateHolder(stakeHolders)"
+                        ></button>
+                        <button pButton pRipple 
+                            type="button" 
+                            icon="pi pi-times" 
+                            class="p-button-rounded p-button-danger"
+                            (click)="deleteHolder(stakeHolders)"
+                        ></button>
+                    </td>
+                </tr>
+            </ng-template>                
+          </p-table>
+    </ng-template >  
+    <ng-template pTemplate="footer">
+        <button type="submit" 
+            pButton 
+            pRipple 
+            label="Cancelar" 
+            icon="pi pi-check" 
+        class="p-button-text" 
+        (click)="display_holder=false"></button>
+    </ng-template >  
+    
+</p-dialog>
+<p-dialog header="Participante lado institucion beneficaria" 
+
+[(visible)]="display_cu" modal="true"
+           showEffect="fade" [style]="{width: '50%'}">
+           
+    <form  [formGroup]="object">
+        <div class="p-grid">
+            <div class="p-col-12">
+                <label for="objetivoEspecifico">Tipo de Objetivo:</label>
+            </div>
+            <!-- <div class="p-col-10">
+                <input formControlName="objetivoEspecifico" type="text" pInputText
+                    placeholder="Objetivos específicos">
+            </div> -->
+            <div class="p-col-10">
+                <p-dropdown 
+                [options]="objetive" 
+                [(ngModel)]="objetiveSelect"
+                formControlName="type"
+                placeholder="tipo" 
+                optionLabel="name" [showClear]="true">
+
+                </p-dropdown>
+            </div>
+            <div class="p-col-12">
+                <label for="indicador">Indicador:</label>
+            </div>
+            <div class="p-col-10">
+                <input formControlName="indicator" type="text" pInputText placeholder="Indicador">
+            </div>
+            <div class="p-col-12">
+                <label for="medioVerificacionEspe">Medio de verificación:</label>
+            </div>
+            <div class="p-col-10">
+                <input formControlName="means_verification" type="text" pInputText
+                    placeholder="Medios de verificación">
+            </div>
+            <!-- <div class="p-col-12">
+                <label for="resultado">Resultado:</label>
+            </div>
+            <div class="p-col-10">
+                <textarea formControlName="resultado" [rows]="5" [cols]="30" pInputTextarea
+                    placeholder="Resultados" ></textarea>
+            </div> -->
+            <div class="p-col-12">
+                <label for="actividad">Descripcion:</label>
+            </div>
+            <div class="p-col-10">
+                <textarea 
+                    formControlName="description" [rows]="5" [cols]="30" pInputTextarea
+                    placeholder="Ingresa la descripcion recuerda se es objetivos las primera palabra 
+                    es con verbos terminados en ar er o ir" >
+                </textarea>
+            </div>
+            <div class="p-md-4">
+                
+            </div>
+        </div>
+        <button 
+            pButton 
+            *ngIf="display_btnD"
+            [disabled]="object.invalid"
+            type="submit" 
+            label="Crear"
+            (click)="createObjetives()"
+        ></button>
+        <button 
+        pButton 
+        pRipple 
+        [disabled]="object.invalid"
+        *ngIf="!display_btnD"
+        type="submit" 
+        label="Actualizar" 
+        class=" p-button-outlined p-button-success"
+        (click)="updatepObjetives()"
+        >
+        </button>
+
+    </form>
+</p-dialog>

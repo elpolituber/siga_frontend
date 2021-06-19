@@ -1,5 +1,7 @@
 export interface CoordinatorTable {
-    coordinator_name; 
-    coordinator_postition;
-    coordinator_funtion;
+    name; 
+    lastname;
+    identification;
+    position;
+    type;
 }

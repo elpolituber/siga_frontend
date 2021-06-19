@@ -4,6 +4,7 @@ import {State} from '../ignug/state';
 export interface BeneficiaryInstitution {
     id?:number;
     logo?: string;
+    ruc?:number;
     files?:File[];
     name?: string;
     address?: Addreess; // con calles

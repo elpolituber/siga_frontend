@@ -19,6 +19,9 @@ import {TableModule} from 'primeng/table';
 import {StepsModule} from 'primeng/steps';
 import {DialogModule} from 'primeng/dialog';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {ToastModule} from 'primeng/toast';
+import {CascadeSelectModule} from 'primeng/cascadeselect';
 
 import { from } from 'rxjs';
 
@@ -34,6 +37,7 @@ import { ActivitiesComponent } from './activities/activities.component';
 import { SchedulesComponent } from './schedules/schedules.component';
 import { ObservationsComponent } from './observations/observations.component'
 import {CommunityService} from '../../../services/community/community.service';
+
 
 @NgModule({
     imports: [
@@ -58,6 +62,9 @@ import {CommunityService} from '../../../services/community/community.service';
         DialogModule,
         AutoCompleteModule,
         ReactiveFormsModule,
+        SplitButtonModule,
+        ToastModule,
+        CascadeSelectModule
     ],
     declarations: [
         ProjectInfoComponent,

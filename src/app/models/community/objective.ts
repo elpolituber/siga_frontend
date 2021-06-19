@@ -2,11 +2,12 @@ import {Catalogue, State} from '../ignug/models.index';
 
 export interface Objective {
     id?:number;
-    parent?:Objective;
+   // parent?:Objective;
     indicator?: string;
-    means_verification?: string
-    description?: string
+    means_verification?: string;
+    description?: string;
     type?: Catalogue;
-    children?: Objective[];
+    project_id?:number;
+  //  children?: Objective[];
     state?: State;
 }

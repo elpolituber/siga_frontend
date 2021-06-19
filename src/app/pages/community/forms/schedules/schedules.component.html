@@ -1,18 +1,200 @@
-<div class="container">
-    <div class="p-grid">
-        <div class="p-col-12">
-            <div class="card">
-                <h1>Subir imagenes del los cronogramas</h1>
-                <p-fileUpload name="Cronograma[]" url="servidor" (onUpload)="onUpload($event)" multiple="multiple"
-                    accept="image/*">
-                    <ng-template>
-                        <ul *ngIf="uploadedFiles.length">
-                            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes
-                            </li>
-                        </ul>
-                    </ng-template>
-                </p-fileUpload>
+<p-toast></p-toast>
+<p-accordion>
+    <p-accordionTab header="Cronograma">          
+        <div class="container">
+            <div class="p-grid">
+                <div class="p-col-12">
+                    <div class="card">
+                        <h1>Subir pdf del cronograma</h1>
+                        <p-fileUpload 
+                            name="Cronograma[]" 
+                             customUpload="true" 
+                            (uploadHandler)="onUpload($event)"
+                            accept="application/pdf">
+                            <ng-template>
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes
+                                    </li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
+                        
+                            <!-- *ngIf="!display_schedules" -->
+                        <div
+                        >
+                            <a href="{{getUpload('schedules')}}"  target="_blank">
+                                <p-button label="Desacgar el pdf"
+                                 type="submit"   
+                                 icon="pi pi-file-pdf" 
+                                 styleClass="p-button p-button-warning">
+                                </p-button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </p-accordionTab> 
+    <p-accordionTab header="Datos de empresa" >
+        <div class="p-col-12 p-lg-12">
+            <div class="p-grid ui-fluid">
+                <div class="p-md-6">
+                    <h1>Logo institutción beneficiaria</h1>
+                </div>
+                <div class="p-md-6">
+                    <div class="p-grid ui-fluid">
+                        <div class="p-md-6">
+                            <h1>
+                                Documentacion de institutción beneficiaria 
+                            </h1>
+                        </div>
+                        <div class="p-md-2">
+                            <p-dialog header="Copia de datos de indentidad" [(visible)]="display" modal="true"
+                                showEffect="fade" [style]="{width: '400px'}">
+                                <p style="margin-top: 1em; margin-bottom: 1em">
+                                    Documentos habilitantes de la entidad (cédula del representante legal, papeleta de
+                                    votación, ruc, nombramiento, u otros documentos solicitados)
+                                </p>
+                                <p-footer>
+                                    <button type="submit" pButton (click)="display=false" label="Aceptar"></button>
+                                </p-footer>
+                            </p-dialog>
+                            <button pButton type="text" label="Ayuda" icon="pi pi-question-circle"
+                                (click)="display=true"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-12 p-md-6">
+                    <p-fileUpload name="logoEntidad[]" 
+                    
+                    customUpload="true" 
+                    (uploadHandler)="onUpload2($event)" accept="image/*">
+                        <ng-template>
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}}
+                                    bytes
+                                </li>
+                            </ul>
+                        </ng-template>
+
+                    </p-fileUpload>
+                    <div
+                    *ngIf="display_logo"
+                    >
+                    <br>
+                        <img src="{{getUpload('logo')}}" style="width:100px;">
+                        <br>
+                        <h5>Vista previa:</h5>
+                    </div>    
+                    
+                </div>
+                <div class="p-col-12 p-md-6">
+                    <p-fileUpload name="copiaDatosEntidad[]"  
+                    customUpload="true"
+                    (uploadHandler)="onUpload3($event)"
+                        accept="application/pdf">
+                        <ng-template>
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}}
+                                    bytes
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </p-fileUpload>
+                    <div
+                     >
+                        <a href="{{getUpload('file')}}"  target="_blank">
+                            <p-button label="Descagar el pdf"
+                             type="submit"   
+                             icon="pi pi-file-pdf" 
+                             styleClass="p-button p-button-warning">
+                            </p-button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-accordionTab>
+    <p-accordionTab header="Envios y observaciones" >
+        <div class="p-grid">
+            <div class="p-col-12 p-md-12">
+                <h5>Cambiar estado de proyecto</h5>
+                <p-splitButton label="Pendiente"
+                    *ngIf="displey_rol" 
+                    (onClick)="statusA('STATUS_2')" 
+                    [model]="items">
+                </p-splitButton>
+                &nbsp; 
+                &nbsp;
+                <span *ngIf="this.projects.status.code=='STATUS_1' && !displey_rol">
+                <button pButton type="submit" 
+                    label="Terminar y enviar a coodinación" 
+                    (click)="statusA('STATUS_2')" 
+                ></button>
+                    &nbsp; 
+                    &nbsp;
+                </span>
+                <span *ngIf="this.projects.status.code=='STATUS_3' && !displey_rol">
+                    <button pButton type="submit" 
+                    label="Enviar a corrección" 
+                    (click)="statusA('STATUS_4')" 
+                    ></button>
+                    &nbsp; 
+                    &nbsp;
+                    <button pButton 
+                    type="submit" 
+                    label="Revisar Obsevacion/es"
+                    icon="pi pi-question-circle" 
+                    (click)="dialog('see')" 
+                    ></button> 
+                </span>
+            </div>
+            <div class="p-col-12 p-md-10">
+                <br>
+              <h5><strong> Estado Actual: {{state}}</strong></h5>
+                <br>
+              <h5><strong> Correo del creador: {{email}}</strong></h5>
+            </div>
+            
+        </div>
+    </p-accordionTab>
+</p-accordion>
+<p-dialog header="Observacion" 
+    [(visible)]="display_status" 
+    modal="true"
+    showEffect="fade" [style]="{width: '42%'}"
+>
+    <form  [formGroup]="status">
+        <div class="p-grid">
+            <div class="p-col-12">
+                <label for="actividad"><strong><center> Observacion/es a rectificar: </center></strong></label>
+            </div>
+            <div class="p-col-10">
+                <center>
+                    <textarea 
+                        *ngIf='!status_d'
+                        formControlName="observation" [rows]="5" [cols]="85" pInputTextarea
+                        placeholder="Ingresa la razon">
+                    </textarea>
+                    <textarea 
+                    *ngIf='status_d'
+                    formControlName="observation" [rows]="5" [cols]="85" pInputTextarea
+                    disabled="disabled" 
+                    >
+                    </textarea>
+                
+                </center>
+
+            </div>
+            <div class="p-md-4">
+                
+            </div>
+        </div>
+        <button 
+            pButton 
+            type="submit" 
+            label="Enviar"
+            (click)="statusR()"
+        ></button>
+    </form>
+</p-dialog>

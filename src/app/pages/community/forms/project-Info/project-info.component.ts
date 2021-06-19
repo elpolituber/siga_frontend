@@ -1,5 +1,5 @@
 import { Component, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder,Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { CommunityService } from '../../../../services/community/community.service';
 import { Catalogue } from '../../../../models/ignug/catalogue';
@@ -7,11 +7,13 @@ import { debounceTime } from 'rxjs/operators';
 import { FormsComponent }from '../form.component';
 import { Router } from '@angular/router';
 import { Project } from 'src/app/models/community/project';
-
+import {MessageService} from 'primeng/api';
+import {Role} from '../../../../models/auth/role';
 
 @Component({
     selector: 'app-proyecto',
     templateUrl: './project-info.component.html',
+    providers: [MessageService]
 })
 export class ProjectInfoComponent implements OnInit {
     //variables de comprobante
@@ -20,7 +22,8 @@ export class ProjectInfoComponent implements OnInit {
     comprobante=true;
     // VARIABLES FORM CONTROL
     form: FormGroup;
-
+    role:Role;
+    rol:any;
     // AUTOCOMPLETE COMBO
     assignedLines: SelectItem[];
     filtered: any[];
@@ -28,19 +31,28 @@ export class ProjectInfoComponent implements OnInit {
     filtereCareers:SelectItem[];
     modalitys="";
     very_date=false;
+    countries: any;
+
     
     // URLS
     urlcombo = 'combo';
-   
+    
 
     //valores esternos
     value:"hola mundo";
     
     constructor(private communityService: CommunityService,
         private formBuilder: FormBuilder,
-        private router:Router) {
-        this.buildForm();
+        private router:Router,
+        private messageService: MessageService,
+           ) {
+        // this.role=JSON.parse(localStorage.getItem('role')) as Role;
+        // this.rol={id:1, name:'persona de vincualacion', code""};
+        // this.buildForm();
+
     //   this.getupdate();
+
+        this.location();
     }
 
     ngOnInit(): void {
@@ -52,19 +64,17 @@ export class ProjectInfoComponent implements OnInit {
     private buildForm() {
         this.form = this.formBuilder.group({
             id_project:[''],
-            title: [''],
-            code: [' '],
-            field: [''],
-            career:[''],
-            cycle:[' '],
+            title: ['',Validators.required],
+            code: [' ',Validators.required],
+            field: ['',Validators.required],
+            career:['',Validators.required],
+            cycle:[' ',Validators.required],
             modality:[' '],
-            city: [' '], // id parroquia
-            canton:[' '],
-            province:[' '],
+            location: [' ',Validators.required], // id parroquia
             lead_time: [' '],
-            delivery_date: [' '],
-            start_date: [' '],
-            end_date: [''],
+            delivery_date: [' ',Validators.required],
+            start_date: [' ',Validators.required],
+            end_date: ['',Validators.required],
             tabPanel:['first'],
         });
         this.form.valueChanges
@@ -78,46 +88,43 @@ export class ProjectInfoComponent implements OnInit {
                  this.very_date=true;
               }
            }   
-        //   this.url = this.router.parseUrl(this.router.url).root.children.primary.segments;
-        //   console.log(this.comprobante);
-        //    if(this.url.length ==3 && this.comprobante==true){
-        //         this.comprobante=false;
-        //         this.getupdate();
-        //         console.log("actualizado");
-        //     }
            if(this.url.length ==2 && this.comprobante==true){
                 this.comprobante=false;
-           }
-           
-           
+           }   
         });
+        
     }
-
     getupdate(){
         let val=this.url[2];
-        if(this.url.length ==3 ){
+        if(this.url.length ==3 ){ 
         this.communityService.get('project/'+val).subscribe(
             response => {
                 this.projects=response;
-                 console.log(this.projects);
-
-            this.updateForm(this.projects);      
-              
+                 console.log("carga de project info");
+                this.updateForm(this.projects);      
             },
             error => {
+                this.router.navigate(['/community/forms']);
                 console.log(error);
             });
         }else{
-            console.log("no es para actualizar",this.form.value);
+            //console.log("no es para actualizar",this.form.value);
         }
-            console.log(this.projects);
-           
-       
-        console.log("termina actualizacion",this.form.value);
+            // console.log(this.projects);
 
     }
+    location(){
+        this.communityService.get('location').subscribe(
+            response => {
+                this.countries=response;
+                console.log(this.countries);
+            },
+            error => {
+                console.log(error);
+            });  
+    }
     updateForm(project:Project):void{
-        console.log(project);
+        // console.log(project);
         this.form.patchValue({
             id_project:project.id,
         })
@@ -125,25 +132,18 @@ export class ProjectInfoComponent implements OnInit {
             title: project.title,
             code: project.code,
             field: project.field,
-           // career:project.career.name,
-            // modality:project.career.modality.name,
+            career:project.career,
+            cycle:project.cycle,
+            lead_time:project.lead_time,
+            delivery_date: project.delivery_date,
+            start_date: project.start_date,
+            end_date: project.end_date,
+        //  modality:project.career.modality.name,
         });
         // this.form.patchValue({
-            // esto una vez que el validador estese en su 100%
-        //     id_project:project.id,
-        //     title: project.title,
-            
-        //     field: project.field,
-        //     career:project.career.name,
-        //     cycle:project.cycle,
-        //     modality:project.career.modality.name,
         //     // city: [''], // id parroquia
         //     // canton:[''],
         //     // province:[''],
-        //     lead_time:project.lead_time,
-        //     delivery_date: project.delivery_date,
-        //     start_date: project.start_date,
-        //     end_date: project.end_date,
         // });
     }
 
@@ -185,20 +185,7 @@ export class ProjectInfoComponent implements OnInit {
                 console.log(error);
             });
     }
-    autocomplete(){
-        this.form.patchValue({
-            title: 'Probando',
-            // code: 'yavirac.123',
-             field: 'prueba',
-            // career:{id:'1'},
-             cycle:'primero',
-            // modality:(this.form.value['career']['modality']['name']),
-            // location: '1', // id parroquia
-            // lead_time: {id:'1'},
-        });
-      
-    //    console.log(this.form.value);
-    }
+    
     calcularleadTime(startDate, endDate) {
         if (startDate != undefined && startDate.length != 0
           && endDate != undefined && endDate.length != 0) {
@@ -233,22 +220,44 @@ export class ProjectInfoComponent implements OnInit {
             this.form.patchValue({
                 id_project:value.id
             });
-            console.log(value);
+            this.messageService.add({severity: 'info',
+                    summary: 'Se a guardado', 
+                    detail: 'Los documentos para la vincualcion esta elaborando'});
+            this.router.navigate(['/community/forms/'+value.id]);
+            this.getupdate();
             }, error => {
                 console.log(error.error);
             });
+
     }
     update(){
         let formulario=this.form.value;
-        this.communityService.put('prueba',formulario).subscribe(
+        this.communityService.put('project',formulario).subscribe(
            (response:any)=>{
                 let value=response;
+                //console.log(value);
+                this.getupdate();
                        
            },error=>{
                 console.log(error.error);
             
-           });
-        
-    }
+           });     
+
+                this.vCRUD('update');
+        }
+    vCRUD(type:string){
+        if(type=="update"){
+            this.messageService.add({severity:'success', 
+                summary: 'Actualizado', 
+                detail: 'Se a actuzalizado su contenido'
+            });
+        }
+        if(type=="create"){
+            this.messageService.add({severity:'info', 
+                summary: 'Guardado', 
+            detail: 'Se a guardado su contenido'    
+            });
+        }
+    }    
 }
 

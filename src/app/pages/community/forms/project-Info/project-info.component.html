@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="p-grid ui-fluid">
     <form [formGroup]="form" novalidate class="p-grid" >
         <div class="p-col-6">
@@ -33,6 +34,7 @@
                 formControlName="career"
                 [suggestions]="filtereCareers"
                 (completeMethod)="careerF($event)" 
+                field="name"
                 [minLength]="1" 
                 [dropdown]="true"
                 >
@@ -57,42 +59,17 @@
         </div>
         
         <div class="p-field p-col-6">
-            <label for="carrera">Canton:</label><br>
-            <p-autoComplete formControlName="canton" [suggestions]="careers"
-                (completeMethod)="filterAssignedLines($event)" [minLength]="1" [dropdown]="true">
-                <ng-template let-brand pTemplate="item">
-                    <div class="ui-helper-clearfix">
-                        <div style="font-size:18px;margin:10px 10px 0 0">{{brand}}</div>
-                    </div>
-                </ng-template>
-            </p-autoComplete>
+            <label for="carrera">Localización:</label><br>
+            <p-cascadeSelect formControlName="location" 
+            [options]="countries" 
+            optionLabel="name" 
+            optionGroupLabel="name" 
+            [optionGroupChildren]="['children','children']" 
+            [style]="{'minWidth': '14rem'}">      
+            </p-cascadeSelect>
+
         </div>
 
-        <div class="p-field p-col-6">
-            <label for="carrera">Ciudad:</label><br>
-            <p-autoComplete [suggestions]="careers"
-            formControlName="city"
-                (completeMethod)="filterAssignedLines($event)" [minLength]="1" [dropdown]="true">
-                <ng-template let-brand pTemplate="item">
-                    <div class="ui-helper-clearfix">
-                        <div style="font-size:18px;margin:10px 10px 0 0">{{brand}}</div>
-                    </div>
-                </ng-template>
-            </p-autoComplete>
-        </div>
-
-        <div class="p-field p-col-6">
-            <label for="provincia">Provincia:</label><br>
-            <p-autoComplete [suggestions]="provincia"
-            formControlName="province"
-                (completeMethod)="filterAssignedLines($event)" [minLength]="1" [dropdown]="true">
-                <ng-template let-brand pTemplate="item">
-                    <div class="ui-helper-clearfix">
-                        <div style="font-size:18px;margin:10px 10px 0 0">{{brand}}</div>
-                    </div>
-                </ng-template>
-            </p-autoComplete>
-        </div>
         <div class="p-field p-col-6">
             <label for="plazo">Plazo de ejecucion:</label>
             <input formControlName="lead_time" 
@@ -100,7 +77,7 @@
             pInputText placeholder="Plazo de ejecucion"><span>mese/s</span>
         </div>
         <br>
-        <div class=" p-col-6" *ngIf="this.very_date">
+        <div class=" p-col-6" >
             <label for="fechaPresentacion">Fecha presentacion:</label> <br><br>
             <p-calendar 
             formControlName="delivery_date"
@@ -123,38 +100,30 @@
             [showIcon]="true" 
             placeholder="Fecha final"></p-calendar>
         </div>
-        <div class="p-col-7">
-            <input formControlName="id_project" 
-            disabled="disabled" type="text">
-        </div>
         <br>
-        <p-button
-            type="submit" 
-            (click)="autocomplete()"
-            class="p-col-8"
-        >
-        Autocompletar
-        </p-button>
-        
-        <button 
-            *ngIf="form.value.id_project=='' && this.url.length == 2"
-            pButton 
-            pRipple 
-            type="submit" 
-            label="Guardar" 
-            class=" p-button-outlined"
-            (click)="create()"
-        >
-        </button>
-        <button 
-            *ngIf="form.value.id_project!='' || this.url.length == 3"
-            pButton 
-            pRipple 
-            type="submit" 
-            label="Actualizar" 
-            class=" p-button-outlined p-button-success"
-            (click)="update()"
-        >
-        </button>        
+        <div class="p-col-12" >
+            <button 
+                *ngIf="form.value.id_project=='' && this.url.length == 2"
+                pButton 
+                pRipple 
+                [disabled]="form.invalid" 
+                type="submit" 
+                label="Guardar" 
+                class=" p-button-outlined"
+                (click)="create()"
+            >
+            </button>
+            <button 
+                *ngIf="form.value.id_project!='' || this.url.length == 3"
+                pButton 
+                pRipple 
+                [disabled]="form.invalid" 
+                type="submit" 
+                label="Actualizar" 
+                class=" p-button-outlined p-button-success"
+                (click)="update()"
+            >
+            </button>      
+        </div>
     </form>
 </div>

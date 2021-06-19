@@ -1,37 +1,61 @@
+<p-toast></p-toast>
 <div class="p-grid ui-fluid">
     <form [formGroup]="form" novalidate>
         <p-accordion>
             <p-accordionTab header="Frecuencia de las actividades" [selected]="true">
                 <div class="p-col-2 p-sm-6">
                     <div class="p-grid">
-                        <p-autoComplete formControlName="frecuenciaActiv" [suggestions]="fraquencyOfActivities"
-                            (completeMethod)="filterAssignedLines($event)" [size]="30" [minLength]="1"
-                            [dropdown]="true">
-                            <ng-template let-brand pTemplate="item">
-                                <div class="ui-helper-clearfix">
-                                    <div style="font-size:18px;margin:10px 10px 0 0">{{brand}}</div>
-                                </div>
-                            </ng-template>
-                        </p-autoComplete>
+                        <p-dropdown 
+                            [options]="fraquencyOfActivities" 
+                            formControlName="frecuenciaActiv"
+                            optionLabel="name"
+                             placeholder="frecuencia de actividades" 
+                             [showClear]="true"
+                        ></p-dropdown>
                     </div>
                 </div>
             </p-accordionTab>
             <p-accordionTab header="Actividad de vinculación">
-                <p-listbox formControlName="actividadesVincu" [options]="bondingActivitiesListbox" [(ngModel)]="bonding"
-                    checkbox="checkbox" filter="filter" multiple="multiple"></p-listbox>
+                <p-listbox formControlName="actividadesVincu" [options]="bondingActivitiesListbox"
+                    checkbox="checkbox" filter="filter" multiple="multiple" ></p-listbox>
             </p-accordionTab>
             <p-accordionTab header="Ejes estratégicos de vinculación con la colectividad">
-                <p-listbox formControlName="ejesEstrategicos" [options]="linkageAxesListbox" [(ngModel)]="linkage"
+                <p-listbox formControlName="ejesEstrategicos" [options]="linkageAxesListbox" 
                     checkbox="checkbox" filter="filter" multiple="multiple"></p-listbox>
             </p-accordionTab>
             <p-accordionTab header="Áreas de aplicación de los proyectos de vinculación">
-                <p-listbox formControlName="areasAplicacion" [options]="researchAreasListbox" [(ngModel)]="research"
+                <p-listbox formControlName="areasAplicacion" [options]="researchAreasListbox" 
                     checkbox="checkbox" filter="filter" multiple="multiple"></p-listbox>
             </p-accordionTab>
+            <p-accordionTab header="Descripción general del proyecto">
                 <label> Descripción general del proyecto</label><br>
                 <textarea formControlName="descripGeneral" id="descripcionGeneral" style="width: 1000px;" [rows]="5"
                     [cols]="30" pInputTextarea placeholder="Descripción general del proyecto "
-                    autoResize="autoResize"></textarea>
+                    ></textarea>
+            </p-accordionTab>
         </p-accordion>
+        <br>
+        <button  
+            *ngIf="!botton_display"  
+            pButton 
+            pRipple 
+            [disabled]="form.invalid"
+            type="submit" 
+            label="Guardar" 
+            class=" p-button-outlined"
+            (click)="create()"
+        >
+        </button>
+        <button 
+                *ngIf="botton_display"
+                pButton 
+                pRipple 
+                [disabled]="form.invalid"
+                type="submit" 
+                label="Actualizar" 
+                class=" p-button-outlined p-button-success"
+                (click)="update()"
+            >
+        </button>
     </form>
 </div>
